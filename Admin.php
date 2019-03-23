@@ -1,4 +1,8 @@
 <!doctype html>
+<?php
+include("connection.php");
+error_reporting(0);
+ ?>
 <html lang="en">
 	<head>
 		<!-- Required meta tags -->
@@ -23,7 +27,8 @@
 				  </div>
 				</div>
 				<form class="form-inline">
-				  <button  class="btn btn-outline-success my-2 my-sm-0"> Log Out</button>
+				  <button  id="mybutton" class="btn btn-outline-success my-2 my-sm-0"> Log Out</button>
+				  
 				</form>
 			</nav>
 			<div id="accordion">
@@ -35,30 +40,59 @@
 					</div>
 					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body">
-							<form method="post">
+							<form method="POST">
 								<div class="form row">
 									<div class="form-group col-md-6">
 										<label for="name">Username</label>
-										<input type="text" class="form-control" name="name" placeholder="Name">
+										<input type="text" class="form-control" name="uname" placeholder="Name">
 									</div>
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label for="password">Password</label>
-										<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+										<input type="password" id="password" name="pass" class="form-control" placeholder="Password">
 									</div>
 								</div>
+
+								
 								<div class="form-group row invalid">
 									<div class="form-group col-md-6">
 										<label for="confpassword" style="color:black">Confirm Password</label>
 										<input type="password" id="confirmpassword" name="confirmpassword" class="form-control" name="confpassword" placeholder="Confirm Password">
 									</div>
 								</div>
-								<button type="submit" class="btn btn-primary">Add</button>
+								<input type="submit" name='submit_add' class="btn btn-primary" value ='add'>
 							</form>
 						</div>
 					</div>
 				</div><!--Collapse Group 1 Ended-->
+
+				<?php 
+					if ($_POST['submit_add']){
+						$username_add=$_POST['uname'];
+						$password_add=md5($_POST['pass']);
+						$level=0;
+
+						if($username_add !="" && $password_add !=""){
+							$query="INSERT INTO USERS VALUES ('$username_add','$password_add','$level') ";
+							$data=mysqli_query($conn,$query);
+							if ($data){
+								 $message_add = "data inserted Successfully.";
+  									echo "<script type='text/javascript'>alert('$message_add');</script>";
+
+							}
+
+						}
+					}
+
+					
+					
+					
+					
+					
+						
+							   	
+						?>
 				<div class="card"><!--Collapse Gorup 2 Started -->
 					<div class="card-header" id="headingTwo">
 						<h5 class="mb-0">
@@ -68,18 +102,38 @@
 					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 						<div class="card-body">
 							<!--Group 2 Data Started-->
-							<form method="post">
+							<form method="POST" action=''>
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="username">Username</label>
-									<input type="text" class="form-control" name="username" placeholder="Provide Username of user you want to Delete">
+									<input type="text" class="form-control" name="usname" placeholder="Provide Username of user you want to Delete">
 								</div>
 							</div>
-							<button class="btn btn-primary" >Delete User</button>
+							<input  class="btn btn-primary" type='submit' name="submit_del" value="Delete User">
 							</form>
 							<!--Group 2 Data Ended-->
 						</div>
 					</div>
+					<?php 
+					if ($_POST['submit_del']){
+					$username_del=$_POST['usname'];
+					if ($username_del !=""){
+					$query_del = "DELETE FROM USERS WHERE USERNAME='$username_del'"; 
+					$data_del =mysqli_query($conn,$query_del);
+					if ($data_del){
+						$message_del = "data deleted Successfully.";
+  									echo "<script type='text/javascript'>alert('$message_del');</script>";
+    
+					}
+						
+					
+					}
+				}
+					
+
+					?>
+
+
 				</div><!--Collapse group 2 ended-->
 				<div class="card"><!--Collapse Gorup 2 Started -->
 					<div class="card-header" id="headingThree">
@@ -90,24 +144,40 @@
 					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
 						<div class="card-body">
 							<!--Group 2 Data Started-->
-							<form method="post">
+							<form method="POST" action ="">
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="username">Username</label>
-									<input type="text" class="form-control" name="username" placeholder="Provide Username of user you want to change password of">
+									<input type="text" class="form-control" name="usename" placeholder="Provide Username of user you want to change password of">
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="password">Password</label>
-									<input type="password" class="form-control" name="password" placeholder="New Password">
+									<input type="password" class="form-control" name="pasw" placeholder="New Password">
 								</div>
 							</div>
-							<button class="btn btn-primary" >Update User</button>
+							<input class="btn btn-primary" type="submit" name="submit_update" value="Update User">
 							</form>
 						</div>
 					</div>
 				</div>
+				<?php 
+				if ($_POST['submit_update']){
+				$username_update=$_POST['usename'];
+				$password_update=md5($_POST['pasw']);
+				if ($username_update !=""){
+				$query_update="UPDATE USERS SET PASSWORD='$password_update' WHERE USERNAME='$username_update'";
+				$data_upadte=mysqli_query($conn,$query_update);
+				if ($data_upadte){
+					$message_update = "data update Successfully.";
+  									echo "<script type='text/javascript'>alert('$message_update');</script>";
+
+				}
+			    }
+			}
+				?>
+
 			<!-- Optional JavaScript -->
 			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -116,3 +186,7 @@
 		</div>
 	</body>
 </html>
+<?php 
+
+
+?>
