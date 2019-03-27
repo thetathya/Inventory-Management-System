@@ -22,7 +22,7 @@ error_reporting(0);
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				  <div class="navbar-nav">
 					<a class="nav-item nav-link active" href="#">Users<span class="sr-only">(current)</span></a>
-					<a class="nav-item nav-link" href="#">Guide</a>
+					<a class="nav-item nav-link" href="#">Product</a>
 					<a class="nav-item nav-link" href="#">Contact Us</a>
 				  </div>
 				</div>
