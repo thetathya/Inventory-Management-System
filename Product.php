@@ -1,4 +1,8 @@
 <!doctype html>
+<?php 
+include("connection.php");
+error_reporting(0);
+?>
 <html lang="en">
 	<head>
 		<!-- Required meta tags -->
@@ -17,7 +21,7 @@
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				  <div class="navbar-nav">
-					<a class="nav-item nav-link" href="#">Users</a>
+					<a class="nav-item nav-link" href="Admin.php">Users</a>
 					<a class="nav-item nav-link active" href="#">Product<span class="sr-only">(current)</span></a>
 					<a class="nav-item nav-link" href="#">Contact Us</a>
 				  </div>
@@ -35,30 +39,51 @@
 					</div>
 					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body">
-							<form method="post">
+							<form method="post" action="">
 								<div class="form row">
 									<div class="form-group col-md-6">
 										<label for="name">Name of the product</label>
-										<input type="text" class="form-control" name="name" placeholder="Product Name">
+										<input type="text" class="form-control" name="product_name" placeholder="Product Name">
 									</div>
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label for="price">Price of the Product</label>
-										<input type="number" id="price" name="price" class="form-control" placeholder="Price">
+										<input type="number" id="price" name="product_price" class="form-control" placeholder="Price">
 									</div>
 								</div>
 								<div class="form-group row invalid">
 									<div class="form-group col-md-6">
 										<label for="quant" >Quantity of the Product</label>
-										<input type="number" id="quant" name="quant" class="form-control" placeholder="Total Quantity">
+										<input type="number" id="quant" name="product_quant" class="form-control" placeholder="Total Quantity">
 									</div>
 								</div>
-								<button type="submit" class="btn btn-primary">Add</button>
+								<input type="submit" name="submit_a" class="btn btn-primary" value="Add">
 							</form>
 						</div>
 					</div>
 				</div><!--Collapse Group 1 Ended-->
+
+				<?php 
+				if(isset($_POST['submit_a'])){
+					$product_name=$_POST['product_name'];
+					$price=$_POST['product_price'];
+					$quantity=$_POST['product_quant'];
+					$id=0;
+					if($product_name !="" && $price !="" && $quantity != ""){
+						$query_product="INSERT INTO PRODUCT VALUES ('$id','$product_name','$price','$quantity') ";
+						$data_product=mysqli_query($conn,$query_product);
+						
+						if($data_product){
+							$message_add_product = "product inserted Successfully.";
+  							echo "<script type='text/javascript'>alert('$message_add_product');</script>";
+						}
+					
+					}
+				header('location: Admin.php');
+				}
+
+				?>
 				<div class="card"><!--Collapse Gorup 2 Started -->
 					<div class="card-header" id="headingTwo">
 						<h5 class="mb-0">
@@ -79,11 +104,11 @@
 								<div class="form-group col-md-6">
 									<label for="quant">Quantity</label>
 									<div class="custom-control custom-radio">
-										<input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+										<input type="radio" id="customRadio1" name="radio" value="add" class="custom-control-input">
 										<label class="custom-control-label" for="customRadio1">Add</label>
 									</div>
 									<div class="custom-control custom-radio">
-										<input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+										<input type="radio" id="customRadio2" name="radio" value="sub" class="custom-control-input">
 										<label class="custom-control-label" for="customRadio2">Subtract</label>
 									</div>
 									<input type="number" class="form-control" name="quant" placeholder="Enter the number of Quantity you want to Add/Sub">
@@ -95,12 +120,51 @@
 									<input type="number" class="form-control" name="price" placeholder="Enter the new price">
 								</div>
 							</div>
-							<button class="btn btn-primary">Update Product</button>
+							<input class="btn btn-primary" type="submit" name="update_submit" value="Update Product">
 							</form>
 							<!--Group 2 Data Ended-->
 						</div>
 					</div>
 				</div><!--Collapse group 2 ended-->
+				<?php 
+				if($_POST['update_submit']){
+					$product_id=$_POST['pid'];
+					$update_pro_price=$_POST['price'];
+					$quantity = $_POST['quant'];
+					$radio=$_POST['radio'];
+					$query_product_check="SELECT * FROM PRODUCT WHERE ID='$product_id' ";
+					$data=mysqli_query($conn,$query_product_check);
+					$total=mysqli_num_rows($data);
+					if ($total ==1)
+					{
+
+
+					if($radio == 'add'){
+						$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
+						$result =mysqli_query($conn,$query_update);
+						$array=mysqli_fetch_array($result);
+						$update_quantity=$array[3];
+						$update_quantity = $update_quantity + $quantity ;
+						$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
+						$data_pro_upadte=mysqli_query($conn,$query_pro_update);
+					}
+					elseif ($radio == 'sub') {
+					  	$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
+						$result =mysqli_query($conn,$query_update);
+						$array=mysqli_fetch_array($result);
+						$update_quantity=$array[3];
+						$update_quantity = $update_quantity - $quantity ;
+						$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
+						$data_pro_upadte=mysqli_query($conn,$query_pro_update);
+					  }  
+					header('location: Admin.php');
+				}else{
+					$message_update_product = "Product not Found.";
+  							echo "<script type='text/javascript'>alert('$message_update_product');</script>";
+				}
+			}
+				?>
+
 				<div class="card"><!--Collapse Gorup 2 Started -->
 					<div class="card-header" id="headingThree">
 						<h5 class="mb-0">
@@ -114,14 +178,33 @@
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="pid">Product Id</label>
-									<input type="text" class="form-control" name="pid" placeholder="Provide ID of the Product you want to Delete">
+									<input type="text" class="form-control" name="del_pid" placeholder="Provide ID of the Product you want to Delete">
 								</div>
 							</div>
-							<button class="btn btn-primary">Delete Product</button>
+							<input class="btn btn-primary" type="submit" name="submit_del" value="Delete Product">
 							</form>
 						</div>
 					</div>
 				</div>
+				<?php 
+					if ($_POST['submit_del']){
+					$id_del=$_POST['del_pid'];
+						if ($id_del !=""){
+						$query_pro_del = "DELETE FROM PRODUCT WHERE ID='$id_del'"; 
+						$data_pro_del =mysqli_query($conn,$query_pro_del);
+						header('location: Admin.php');
+							// if ($data_del){
+						// 	$message_del = "data deleted Successfully.";
+  						// 	echo "<script type='text/javascript'>alert('$message_del');</script>";
+    
+							// }
+						
+					
+					}
+				}
+					
+
+					?>
 			<!-- Optional JavaScript -->
 			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

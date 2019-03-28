@@ -22,7 +22,7 @@ error_reporting(0);
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				  <div class="navbar-nav">
 					<a class="nav-item nav-link active" href="#">Users<span class="sr-only">(current)</span></a>
-					<a class="nav-item nav-link" href="#">Product</a>
+					<a class="nav-item nav-link" href="Product.php">Product</a>
 					<a class="nav-item nav-link" href="#">Contact Us</a>
 				  </div>
 				</div>
@@ -117,6 +117,7 @@ error_reporting(0);
 					<?php 
 					if ($_POST['submit_del']){
 					$username_del=$_POST['usname'];
+
 					if ($username_del !=""){
 					$query_del = "DELETE FROM USERS WHERE USERNAME='$username_del'"; 
 					$data_del =mysqli_query($conn,$query_del);
@@ -167,14 +168,16 @@ error_reporting(0);
 				$username_update=$_POST['usename'];
 				$password_update=md5($_POST['pasw']);
 				if ($username_update !=""){
+
 				$query_update="UPDATE USERS SET PASSWORD='$password_update' WHERE USERNAME='$username_update'";
 				$data_upadte=mysqli_query($conn,$query_update);
 				if ($data_upadte){
 					$message_update = "data update Successfully.";
   									echo "<script type='text/javascript'>alert('$message_update');</script>";
 
-				}
+						
 			    }
+			}
 			}
 				?>
 
