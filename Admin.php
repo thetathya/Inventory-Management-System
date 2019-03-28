@@ -61,7 +61,7 @@ error_reporting(0);
 										<input type="password" id="confirmpassword" name="confirmpassword" class="form-control" name="confpassword" placeholder="Confirm Password">
 									</div>
 								</div>
-								<input type="submit" name='submit_add' class="btn btn-primary" value ='add'>
+								<input type="submit" name='submit_add' class="btn btn-primary" value ='Add'>
 							</form>
 						</div>
 					</div>
@@ -72,6 +72,11 @@ error_reporting(0);
 						$username_add=$_POST['uname'];
 						$password_add=md5($_POST['pass']);
 						$level=0;
+						
+						$query_add_user="SELECT * FROM USERS WHERE username='$username'";
+						$data_add_user=mysqli_query($conn,$query_add_user);
+						$total_add_user=mysqli_num_rows($data_add_user);
+						if($total_add_user == 1){
 
 						if($username_add !="" && $password_add !=""){
 							$query="INSERT INTO USERS VALUES ('$username_add','$password_add','$level') ";
@@ -82,7 +87,13 @@ error_reporting(0);
 
 							}
 
-						}
+						} 
+					}else {
+						 $message_add_user = "This username is already exist.";
+  							echo "<script type='text/javascript'>alert('$message_add_user');</script>";
+
+					}
+					
 					}
 
 					
@@ -117,6 +128,10 @@ error_reporting(0);
 					<?php 
 					if ($_POST['submit_del']){
 					$username_del=$_POST['usname'];
+					$query_del_user="SELECT * FROM USERS WHERE username='$username'";
+					$data_del_user=mysqli_query($conn,$query_del_user);
+					$total_del_user=mysqli_num_rows($data_del_user);
+					if($total_del_user == 1){
 
 					if ($username_del !=""){
 					$query_del = "DELETE FROM USERS WHERE USERNAME='$username_del'"; 
@@ -129,6 +144,10 @@ error_reporting(0);
 						
 					
 					}
+				}else{
+					$message_del_user = "Username not found.";
+  					echo "<script type='text/javascript'>alert('$message_del_user');</script>";
+				}
 				}
 					
 
@@ -167,6 +186,11 @@ error_reporting(0);
 				if ($_POST['submit_update']){
 				$username_update=$_POST['usename'];
 				$password_update=md5($_POST['pasw']);
+				$query_update_user="SELECT * FROM USERS WHERE username='$username'";
+				$data_update_user=mysqli_query($conn,$query_update_user);
+				$total_update_user=mysqli_num_rows($data_update_user);
+				if($total_update_user == 1){
+
 				if ($username_update !=""){
 
 				$query_update="UPDATE USERS SET PASSWORD='$password_update' WHERE USERNAME='$username_update'";
@@ -178,6 +202,11 @@ error_reporting(0);
 						
 			    }
 			}
+		}else{
+				$message_update_user = "Username not found.";
+  				echo "<script type='text/javascript'>alert('$message_update_user');</script>";
+
+		}
 			}
 				?>
 

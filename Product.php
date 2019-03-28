@@ -70,18 +70,28 @@ error_reporting(0);
 					$price=$_POST['product_price'];
 					$quantity=$_POST['product_quant'];
 					$id=0;
+					$query_product_add="SELECT * FROM PRODUCT WHERE ID='$product_id' ";
+					$data_product_add=mysqli_query($conn,$query_product_add);
+					$total_product_add=mysqli_num_rows($data_product_add);
+					if ($total_product_add ==1){
+					
+
 					if($product_name !="" && $price !="" && $quantity != ""){
 						$query_product="INSERT INTO PRODUCT VALUES ('$id','$product_name','$price','$quantity') ";
 						$data_product=mysqli_query($conn,$query_product);
 						
-						if($data_product){
-							$message_add_product = "product inserted Successfully.";
-  							echo "<script type='text/javascript'>alert('$message_add_product');</script>";
-						}
+						// if($data_product){
+						// 	$message_add_product = "product inserted Successfully.";
+  				// 			echo "<script type='text/javascript'>alert('$message_add_product');</script>";
+						// }
 					
 					}
-				header('location: Admin.php');
+				// header('location: Admin.php');
+				}else{
+					$message_add_product = "Product is already there !";
+  				echo "<script type='text/javascript'>alert('$message_add_product');</script>";
 				}
+			}
 
 				?>
 				<div class="card"><!--Collapse Gorup 2 Started -->
@@ -127,7 +137,7 @@ error_reporting(0);
 					</div>
 				</div><!--Collapse group 2 ended-->
 				<?php 
-				if($_POST['update_submit']){
+				if(isset($_POST['update_submit'])){
 					$product_id=$_POST['pid'];
 					$update_pro_price=$_POST['price'];
 					$quantity = $_POST['quant'];
@@ -139,30 +149,36 @@ error_reporting(0);
 					{
 
 
-					if($radio == 'add'){
-						$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
-						$result =mysqli_query($conn,$query_update);
-						$array=mysqli_fetch_array($result);
-						$update_quantity=$array[3];
-						$update_quantity = $update_quantity + $quantity ;
-						$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
-						$data_pro_upadte=mysqli_query($conn,$query_pro_update);
-					}
-					elseif ($radio == 'sub') {
-					  	$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
-						$result =mysqli_query($conn,$query_update);
-						$array=mysqli_fetch_array($result);
-						$update_quantity=$array[3];
-						$update_quantity = $update_quantity - $quantity ;
-						$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
-						$data_pro_upadte=mysqli_query($conn,$query_pro_update);
-					  }  
-					header('location: Admin.php');
-				}else{
-					$message_update_product = "Product not Found.";
-  							echo "<script type='text/javascript'>alert('$message_update_product');</script>";
+						if($radio == 'add'){
+							$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
+							$result =mysqli_query($conn,$query_update);
+							$array=mysqli_fetch_array($result);
+							$update_quantity=$array[3];
+							$update_quantity = $update_quantity + $quantity ;
+							$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
+							$data_pro_upadte=mysqli_query($conn,$query_pro_update);
+						
+							}
+						elseif ($radio == 'sub') 
+							{
+					  		$query_update="SELECT * FROM PRODUCT WHERE id='$product_id'";
+							$result =mysqli_query($conn,$query_update);
+							$array=mysqli_fetch_array($result);
+							$update_quantity=$array[3];
+							$update_quantity = $update_quantity - $quantity ;
+							$query_pro_update="UPDATE PRODUCT SET quantity ='$update_quantity',price ='$update_pro_price' WHERE ID='$product_id'";
+							$data_pro_upadte=mysqli_query($conn,$query_pro_update);
+						
+					    	}  
+					
 				}
-			}
+					else
+					{
+					$message_update_product = "Product not Found.";
+  					echo "<script type='text/javascript'>alert('$message_update_product');</script>";
+					}
+				header('location:admin.php');
+					}
 				?>
 
 				<div class="card"><!--Collapse Gorup 2 Started -->
@@ -189,10 +205,16 @@ error_reporting(0);
 				<?php 
 					if ($_POST['submit_del']){
 					$id_del=$_POST['del_pid'];
+					$query_product_del="SELECT * FROM PRODUCT WHERE ID='$product_id' ";
+					$data_product_del=mysqli_query($conn,$query_product_del);
+					$total_product_del=mysqli_num_rows($data_product_del);
+					if ($total_product_del ==1){
+
+
 						if ($id_del !=""){
 						$query_pro_del = "DELETE FROM PRODUCT WHERE ID='$id_del'"; 
 						$data_pro_del =mysqli_query($conn,$query_pro_del);
-						header('location: Admin.php');
+						
 							// if ($data_del){
 						// 	$message_del = "data deleted Successfully.";
   						// 	echo "<script type='text/javascript'>alert('$message_del');</script>";
@@ -200,8 +222,12 @@ error_reporting(0);
 							// }
 						
 					
-					}
+					}header('location:Admin.php');
+				}else{
+					$message_del_pro = "Product not found";
+  					echo "<script type='text/javascript'>alert('$message_del_pro');</script>";
 				}
+			}
 					
 
 					?>
