@@ -231,6 +231,34 @@ error_reporting(0);
 					
 
 					?>
+
+			<div class="card"><!--Collapse Gorup 2 Started -->
+					<div class="card-header" id="headingFour">
+						<h5 class="mb-0">
+							<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">Update Reminders</button>
+						</h5>
+					</div>
+					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+						<div class="card-body">
+							<!--Group 2 Data Started-->
+							<form method="post">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="gstat">Green Status</label>
+									<input type="number" class="form-control" name="gstat" placeholder="e.g.If you will enter 150 then all Product with more than 150 Quantity will show Green status">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="rstat">Red Status</label>
+									<input type="number" class="form-control" name="rstat" placeholder="e.g.If you will enter 50 then all the Product with less than 50 Quantity will show Red status">
+								</div>
+							</div>
+							<button class="btn btn-primary">Update</button>
+							</form>
+						</div>
+					</div>
+				</div>
 			<!-- Optional JavaScript -->
 			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
