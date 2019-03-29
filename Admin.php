@@ -23,7 +23,7 @@ error_reporting(0);
 				  <div class="navbar-nav">
 					<a class="nav-item nav-link active" href="#">Users<span class="sr-only">(current)</span></a>
 					<a class="nav-item nav-link" href="Product.php">Product</a>
-					<a class="nav-item nav-link" href="#">Contact Us</a>
+					<a class="nav-item nav-link" href="Stock.php">Stock</a>
 				  </div>
 				</div>
 				<form class="form-inline">

@@ -23,7 +23,7 @@ error_reporting(0);
 				  <div class="navbar-nav">
 					<a class="nav-item nav-link" href="Admin.php">Users</a>
 					<a class="nav-item nav-link active" href="#">Product<span class="sr-only">(current)</span></a>
-					<a class="nav-item nav-link" href="#">Contact Us</a>
+					<a class="nav-item nav-link" href="Stock.php">Stock</a>
 				  </div>
 				</div>
 				<form class="form-inline">
@@ -70,24 +70,23 @@ error_reporting(0);
 					$price=$_POST['product_price'];
 					$quantity=$_POST['product_quant'];
 					$id=0;
-					$query_product_add="SELECT * FROM PRODUCT WHERE ID='$product_id' ";
+					$query_product_add="SELECT * FROM PRODUCT WHERE PRODUCT_NAME ='$product_name' ";
 					$data_product_add=mysqli_query($conn,$query_product_add);
 					$total_product_add=mysqli_num_rows($data_product_add);
-					if ($total_product_add ==1){
+					if ($total_product_add != 1){
 					
 
-					if($product_name !="" && $price !="" && $quantity != ""){
-						$query_product="INSERT INTO PRODUCT VALUES ('$id','$product_name','$price','$quantity') ";
-						$data_product=mysqli_query($conn,$query_product);
+						if($product_name !="" && $price !="" && $quantity != ""){
+							$query_product="INSERT INTO PRODUCT VALUES ('$id','$product_name','$price','$quantity') ";
+							$data_product=mysqli_query($conn,$query_product);
 						
 						// if($data_product){
 						// 	$message_add_product = "product inserted Successfully.";
-  				// 			echo "<script type='text/javascript'>alert('$message_add_product');</script>";
+  							// echo "<script type='text/javascript'>alert('$message_add_product');</script>";
 						// }
 					
 					}
-				// header('location: Admin.php');
-				}else{
+				}   else{
 					$message_add_product = "Product is already there !";
   				echo "<script type='text/javascript'>alert('$message_add_product');</script>";
 				}
@@ -259,6 +258,24 @@ error_reporting(0);
 						</div>
 					</div>
 				</div>
+				<?php 
+				$green=$_POST['gstat'];
+				$red =$_POST['rstat'];
+				$id=1;
+
+				if ($green !="" && $red !=""){
+
+				$query_label ="UPDATE PROCHECK SET GREEN ='$green',RED ='$red' WHERE ID='$id' ";
+				$data_label =mysqli_query($conn,$query_label);
+			
+			}
+
+
+
+				?>
+
+
+
 			<!-- Optional JavaScript -->
 			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
